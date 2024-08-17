@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -15,6 +16,15 @@ import java.util.Optional;
 public class GuardController {
 
     private final GuardService guardsService;
+
+    @GetMapping
+    public ResponseEntity<List<Guard>> getAllGuards() {
+        List<Guard> guards = guardsService.findAllGuards();
+        return Optional.ofNullable(guards)
+                .filter(list -> !list.isEmpty())
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Guard> getGuardById(@PathVariable Long id){
