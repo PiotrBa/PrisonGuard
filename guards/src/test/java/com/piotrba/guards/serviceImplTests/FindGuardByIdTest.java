@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.when;
 
-public class GuardServiceImplTest {
+public class FindGuardByIdTest {
 
     private GuardServiceImpl guardService;
     private GuardsRepository guardsRepository;
