@@ -24,4 +24,17 @@ public class GuardServiceImpl implements GuardService {
     public Optional<Guard> findGuardById(Long id) {
         return guardsRepository.findById(id);
     }
+
+    @Override
+    public Guard registerNewGuard(Guard guard) {
+        Optional<Guard> existingGuard = guardsRepository.findByEmail(guard.getEmail());
+        if (existingGuard.isPresent()){
+            throw new IllegalStateException("Guard already exists with this email address");
+        }
+        guard.setGrantHighLevelAccess(false);
+        guard.setActive(true);
+        return guardsRepository.save(guard);
+    }
+
+
 }

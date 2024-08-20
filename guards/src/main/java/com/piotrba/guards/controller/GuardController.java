@@ -33,4 +33,14 @@ public class GuardController {
                 .map(guard -> ResponseEntity.ok(guard))
                 .orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<Guard> getNewGuard(@RequestBody Guard guard){
+        try {
+            Guard registerGuard = guardsService.registerNewGuard(guard);
+            return ResponseEntity.status(HttpStatus.CREATED).body(registerGuard);
+        }catch (IllegalStateException e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
 }
