@@ -43,4 +43,15 @@ public class GuardController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+
+    @PostMapping("/edit/{id}")
+    public ResponseEntity<Guard> updateGuard(@PathVariable Long id, @RequestBody Guard guard){
+        try {
+            guard.setId(id);
+            Guard updateGuard = guardsService.updateGuard(guard);
+            return ResponseEntity.ok(updateGuard);
+        }catch (IllegalStateException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }

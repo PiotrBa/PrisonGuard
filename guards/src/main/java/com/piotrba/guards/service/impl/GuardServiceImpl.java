@@ -36,5 +36,15 @@ public class GuardServiceImpl implements GuardService {
         return guardsRepository.save(guard);
     }
 
+    @Override
+    public Guard updateGuard(Guard guard) {
+        Optional<Guard> findExistingGuard = guardsRepository.findById(guard.getId());
+        if (findExistingGuard.isPresent()){
+            return guardsRepository.save(guard);
+        }else {
+            throw new IllegalStateException("Guard does not exists");
+        }
+    }
+
 
 }
