@@ -1,5 +1,6 @@
 package com.piotrba.guards.serviceImplTests;
 
+import com.piotrba.guards.entity.Address;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import com.piotrba.guards.service.impl.GuardServiceImpl;
@@ -20,25 +21,26 @@ public class FindAllGuardTest {
     private GuardsRepository guardsRepository;
 
     List<Guard> guardsList = new ArrayList<>(Arrays.asList(
-            new Guard(1L, "John", "Doe", "123456789", "john.doe@example.com", true, true),
-            new Guard(2L, "Steve", "Smith", "123456789", "steve.smith@example.com", true, true),
-            new Guard(3L, "Emma", "Williams", "123456789", "emma.williams@example.com", true, true)
+            new Guard(1L, "John", "Doe", "123456789", new Address("123 Main St", "12345", "Springfield"), "john.doe@example.com", true, true),
+            new Guard(2L, "Steve", "Smith", "123456789", new Address("456 Elm St", "54321", "Shelbyville"), "steve.smith@example.com", true, true),
+            new Guard(3L, "Emma", "Williams", "123456789", new Address("789 Oak St", "67890", "Capital City"), "emma.williams@example.com", true, true)
     ));
+
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         guardsRepository = Mockito.mock(GuardsRepository.class);
         guardServiceImpl = new GuardServiceImpl(guardsRepository);
     }
 
     @Test
-    public void testFindAllGuardTest_GuardsExist(){
+    public void testFindAllGuardTest_GuardsExist() {
         when(guardsRepository.findAll()).thenReturn(guardsList);
         List<Guard> result = guardServiceImpl.findAllGuards();
         assertEquals(guardsList, result);
     }
 
     @Test
-    public void testFindAllGuardTest_GuardsDoesNotExist(){
+    public void testFindAllGuardTest_GuardsDoesNotExist() {
         when(guardsRepository.findAll()).thenReturn(new ArrayList<>());
         List<Guard> result = guardServiceImpl.findAllGuards();
         assertTrue(result.isEmpty());

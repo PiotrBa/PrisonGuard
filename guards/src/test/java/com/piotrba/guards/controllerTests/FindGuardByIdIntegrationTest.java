@@ -1,5 +1,6 @@
 package com.piotrba.guards.controllerTests;
 
+import com.piotrba.guards.entity.Address;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,9 +36,9 @@ public class FindGuardByIdIntegrationTest {
     public void setUp() {
         guardsRepository.deleteAll();
         List<Guard> guards = Arrays.asList(
-                new Guard(1L, "John", "Doe", "123456789", "john.doe@example.com", true, true),
-                new Guard(2L, "Steve", "Smith", "123456789", "steve.smith@example.com", true, true),
-                new Guard(3L, "Emma", "Williams", "123456789", "emma.williams@example.com", true, true)
+                new Guard(1L, "John", "Doe", "123456789", new Address("123 Main St", "12345", "Springfield"), "john.doe@example.com", true, true),
+                new Guard(2L, "Steve", "Smith", "123456789", new Address("456 Elm St", "54321", "Shelbyville"), "steve.smith@example.com", true, true),
+                new Guard(3L, "Emma", "Williams", "123456789", new Address("789 Oak St", "67890", "Capital City"), "emma.williams@example.com", true, true)
         );
         guardsRepository.saveAll(guards);
 
@@ -56,7 +57,10 @@ public class FindGuardByIdIntegrationTest {
                 .andExpect(jsonPath("$.phoneNumber", is(existingGuard.getPhoneNumber())))
                 .andExpect(jsonPath("$.email", is(existingGuard.getEmail())))
                 .andExpect(jsonPath("$.grantHighLevelAccess", is(existingGuard.getGrantHighLevelAccess())))
-                .andExpect(jsonPath("$.active", is(existingGuard.getActive())));
+                .andExpect(jsonPath("$.active", is(existingGuard.getActive())))
+                .andExpect(jsonPath("$.address.firstLine", is(existingGuard.getAddress().getFirstLine())))
+                .andExpect(jsonPath("$.address.postCode", is(existingGuard.getAddress().getPostCode())))
+                .andExpect(jsonPath("$.address.city", is(existingGuard.getAddress().getCity())));
     }
 
     @Test

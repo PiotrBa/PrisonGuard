@@ -1,5 +1,6 @@
 package com.piotrba.guards.controllerTests;
 
+import com.piotrba.guards.entity.Address;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +39,11 @@ public class RegisterGuardIntegrationTest {
                     "firstName": "John",
                     "lastName": "Doe",
                     "phoneNumber": "123456789",
+                    "address": {
+                        "firstLine": "123 Main St",
+                        "postCode": "12345",
+                        "city": "Springfield"
+                    },
                     "email": "john.doe@example.com",
                     "grantHighLevelAccess": false,
                     "active": true
@@ -53,12 +59,15 @@ public class RegisterGuardIntegrationTest {
                 .andExpect(jsonPath("$.lastName", is("Doe")))
                 .andExpect(jsonPath("$.email", is("john.doe@example.com")))
                 .andExpect(jsonPath("$.grantHighLevelAccess", is(false)))
-                .andExpect(jsonPath("$.active", is(true)));
+                .andExpect(jsonPath("$.active", is(true)))
+                .andExpect(jsonPath("$.address.firstLine", is("123 Main St")))
+                .andExpect(jsonPath("$.address.postCode", is("12345")))
+                .andExpect(jsonPath("$.address.city", is("Springfield")));
     }
 
     @Test
     public void testRegisterNewGuard_Conflict() throws Exception {
-        Guard existingGuard = new Guard(null, "John", "Doe", "123456789", "john.doe@example.com", false, true);
+        Guard existingGuard = new Guard(null, "John", "Doe", "123456789", new Address("123 Main St", "12345", "Springfield"), "john.doe@example.com", false, true);
         guardsRepository.save(existingGuard);
 
         String newGuardJson = """
@@ -66,6 +75,11 @@ public class RegisterGuardIntegrationTest {
                     "firstName": "John",
                     "lastName": "Doe",
                     "phoneNumber": "123456789",
+                    "address": {
+                        "firstLine": "123 Main St",
+                        "postCode": "12345",
+                        "city": "Springfield"
+                    },
                     "email": "john.doe@example.com",
                     "grantHighLevelAccess": false,
                     "active": true

@@ -1,10 +1,8 @@
 package com.piotrba.guards.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +19,8 @@ public class Guard {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    @Embedded
+    private Address address;
     @Email
     private String email;
     private Boolean grantHighLevelAccess;

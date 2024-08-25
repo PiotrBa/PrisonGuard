@@ -1,5 +1,6 @@
 package com.piotrba.guards.serviceImplTests;
 
+import com.piotrba.guards.entity.Address;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import com.piotrba.guards.service.impl.GuardServiceImpl;
@@ -18,8 +19,7 @@ public class RegisterNewGuardTest {
     private GuardsRepository guardsRepository;
     private GuardServiceImpl guardService;
 
-    Guard guard = new Guard(1L, "John", "Doe", "123456789", "john.doe@example.com", true, true);
-
+    Guard guard = new Guard(1L, "John", "Doe", "123456789", new Address("123 Main St", "12345", "Springfield"), "john.doe@example.com", true, true);
 
     @BeforeEach
     public void setUp(){

@@ -1,5 +1,6 @@
 package com.piotrba.guards.controllerTests;
 
+import com.piotrba.guards.entity.Address;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,9 +34,9 @@ public class FindAllGuardsIntegrationTest {
     public void setUp() {
         guardsRepository.deleteAll();
         List<Guard> guards = Arrays.asList(
-                new Guard(1L, "John", "Doe", "123456789", "john.doe@example.com", true, true),
-                new Guard(2L, "Steve", "Smith", "123456789", "steve.smith@example.com", true, true),
-                new Guard(3L, "Emma", "Williams", "123456789", "emma.williams@example.com", true, true)
+                new Guard(1L, "John", "Doe", "123456789", new Address("123 Main St", "12345", "Springfield"), "john.doe@example.com", true, true),
+                new Guard(2L, "Steve", "Smith", "123456789", new Address("456 Elm St", "54321", "Shelbyville"), "steve.smith@example.com", true, true),
+                new Guard(3L, "Emma", "Williams", "123456789", new Address("789 Oak St", "67890", "Capital City"), "emma.williams@example.com", true, true)
         );
         guardsRepository.saveAll(guards);
     }
@@ -48,8 +49,11 @@ public class FindAllGuardsIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()", is(3)))
                 .andExpect(jsonPath("$[0].firstName", is("John")))
+                .andExpect(jsonPath("$[0].address.firstLine", is("123 Main St")))
                 .andExpect(jsonPath("$[1].firstName", is("Steve")))
-                .andExpect(jsonPath("$[2].firstName", is("Emma")));
+                .andExpect(jsonPath("$[1].address.firstLine", is("456 Elm St")))
+                .andExpect(jsonPath("$[2].firstName", is("Emma")))
+                .andExpect(jsonPath("$[2].address.firstLine", is("789 Oak St")));
     }
 
     @Test
