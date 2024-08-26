@@ -45,6 +45,4 @@ public class GuardServiceImpl implements GuardService {
             throw new IllegalStateException("Guard does not exists");
         }
     }
-
-
 }
