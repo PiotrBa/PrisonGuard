@@ -2,7 +2,6 @@ package com.piotrba.guards.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jdk.jfr.Enabled;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Guard {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
     private String lastName;
