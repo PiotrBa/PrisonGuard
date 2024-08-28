@@ -15,6 +15,7 @@
 	<name>PrisonGuardApp</name>
 	<modules>
 		<module>guards</module>
+		<module>visitors</module>
 	</modules>
 
 	<properties>
