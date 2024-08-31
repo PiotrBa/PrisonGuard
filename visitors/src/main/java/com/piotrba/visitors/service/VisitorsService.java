@@ -8,5 +8,4 @@ import java.util.Optional;
 public interface VisitorsService {
 
     Optional<Visitor> findByEMail(String email);
-
 }

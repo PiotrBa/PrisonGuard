@@ -1,4 +1,4 @@
-package com.piotrba.visitors.entity;
+package com.piotrba.visitors.entity.visitorEnum;
 
 public enum RelationshipToPrisioner {
     PARENT,

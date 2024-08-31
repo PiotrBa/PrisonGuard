@@ -24,5 +24,4 @@ public class Guard {
     private String email;
     private Boolean grantHighLevelAccess;
     private Boolean active;
-
 }

@@ -14,7 +14,6 @@ public class VisitorServiceImpl implements VisitorsService {
 
     private final VisitorsRepository visitorsRepository;
 
-
     @Override
     public Optional<Visitor> findByEMail(String email) {
         Optional<Visitor> findByEmail = visitorsRepository.findByEmail(email);
