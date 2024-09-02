@@ -1,7 +1,7 @@
 package com.piotrba.visitors.controller;
 
 import com.piotrba.visitors.entity.Visitor;
-import com.piotrba.visitors.service.VisitorsService;
+import com.piotrba.visitors.service.VisitorService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class VisitorsController {
 
-    private final VisitorsService visitorsService;
+    private final VisitorService visitorsService;
 
     @GetMapping
     public ResponseEntity<Visitor> getVisitor(@RequestBody String email){
