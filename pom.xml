@@ -16,6 +16,7 @@
 	<modules>
 		<module>guards</module>
 		<module>visitors</module>
+		<module>prisoners</module>
 	</modules>
 
 	<properties>
