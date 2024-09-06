@@ -16,11 +16,6 @@ public class VisitorServiceImpl implements VisitorService {
 
     @Override
     public Optional<Visitor> findByEMail(String email) {
-        Optional<Visitor> findByEmail = visitorsRepository.findByEmail(email);
-        if (findByEmail.isEmpty()){
-            throw new RuntimeException("Email does not exist.");
-        }else {
-            return findByEmail;
-        }
+        return visitorsRepository.findByEmail(email);
     }
 }
