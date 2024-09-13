@@ -27,10 +27,20 @@ public class PrisonerServiceImpl implements PrisonerService {
     @Override
     public Optional<Prisoner> updatePrisoner(Long id, Prisoner newPrisoner) {
         Optional<Prisoner> prisonerOptional = prisonersRepository.findById(id);
-        if (prisonerOptional.isPresent()){
-            return Optional.of(prisonersRepository.save(newPrisoner));
-        }else {
-            throw new IllegalStateException("Prisoner does not exists");
+        if (prisonerOptional.isPresent()) {
+            Prisoner prisonerToUpdate = prisonerOptional.get();
+            prisonerToUpdate.setFirstName(newPrisoner.getFirstName());
+            prisonerToUpdate.setLastName(newPrisoner.getLastName());
+            prisonerToUpdate.setIncarcerationDate(newPrisoner.getIncarcerationDate());
+            prisonerToUpdate.setImprisonmentEndTime(newPrisoner.getImprisonmentEndTime());
+            prisonerToUpdate.setImprisonmentRigour(newPrisoner.getImprisonmentRigour());
+            prisonerToUpdate.setAddress(newPrisoner.getAddress());
+
+            prisonersRepository.save(prisonerToUpdate);
+            return Optional.of(prisonerToUpdate);
+        } else {
+            return Optional.empty();
         }
     }
+
 }
