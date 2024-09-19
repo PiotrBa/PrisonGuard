@@ -10,5 +10,5 @@ public interface GuardService {
     List<Guard> findAllGuards();
     Optional<Guard> findGuardById(Long id);
     Guard registerNewGuard(Guard guard);
-    Guard updateGuard(Guard guard);
+    Guard updateGuard(Long id, Guard guard);
 }

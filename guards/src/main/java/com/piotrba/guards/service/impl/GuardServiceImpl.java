@@ -5,6 +5,7 @@ import com.piotrba.guards.repo.GuardsRepository;
 import com.piotrba.guards.service.GuardService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class GuardServiceImpl implements GuardService {
     }
 
     @Override
+    @Transactional
     public Guard registerNewGuard(Guard guard) {
         Optional<Guard> existingGuard = guardsRepository.findByEmail(guard.getEmail());
         if (existingGuard.isPresent()){
@@ -37,12 +39,21 @@ public class GuardServiceImpl implements GuardService {
     }
 
     @Override
-    public Guard updateGuard(Guard guard) {
-        Optional<Guard> findExistingGuard = guardsRepository.findById(guard.getId());
-        if (findExistingGuard.isPresent()){
-            return guardsRepository.save(guard);
-        }else {
-            throw new IllegalStateException("Guard does not exists");
+    @Transactional
+    public Guard updateGuard(Long id, Guard newGuard) {
+        Optional<Guard> existingGuardOptional = guardsRepository.findById(id);
+        if (existingGuardOptional.isEmpty()) {
+            throw new IllegalArgumentException("Guard does not exist");
         }
+        Guard existingGuard = existingGuardOptional.get();
+        existingGuard.setFirstName(newGuard.getFirstName());
+        existingGuard.setLastName(newGuard.getLastName());
+        existingGuard.setEmail(newGuard.getEmail());
+        existingGuard.setPhoneNumber(newGuard.getPhoneNumber());
+        existingGuard.setAddress(newGuard.getAddress());
+        existingGuard.setActive(newGuard.getActive());
+        return existingGuard;
     }
+
+
 }
