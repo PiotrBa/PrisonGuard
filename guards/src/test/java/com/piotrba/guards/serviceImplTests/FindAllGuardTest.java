@@ -4,45 +4,45 @@ import com.piotrba.guards.entity.Address;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import com.piotrba.guards.service.impl.GuardServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class FindAllGuardTest {
 
-    private GuardServiceImpl guardServiceImpl;
+    @Mock
     private GuardsRepository guardsRepository;
 
-    List<Guard> guardsList = new ArrayList<>(Arrays.asList(
+    @InjectMocks
+    private GuardServiceImpl guardService;
+
+
+    List<Guard> guardsList = List.of(
             new Guard(1L, "John", "Doe", "123456789", new Address("123 Main St", "12345", "Springfield"), "john.doe@example.com", true, true),
             new Guard(2L, "Steve", "Smith", "123456789", new Address("456 Elm St", "54321", "Shelbyville"), "steve.smith@example.com", true, true),
             new Guard(3L, "Emma", "Williams", "123456789", new Address("789 Oak St", "67890", "Capital City"), "emma.williams@example.com", true, true)
-    ));
-
-    @BeforeEach
-    public void setUp() {
-        guardsRepository = Mockito.mock(GuardsRepository.class);
-        guardServiceImpl = new GuardServiceImpl(guardsRepository);
-    }
+    );
 
     @Test
-    public void testFindAllGuardTest_GuardsExist() {
+    public void findAllGuard_whenGuardsExist_shouldReturnGuardList() {
         when(guardsRepository.findAll()).thenReturn(guardsList);
-        List<Guard> result = guardServiceImpl.findAllGuards();
+        List<Guard> result = guardService.findAllGuards();
         assertEquals(guardsList, result);
     }
 
     @Test
-    public void testFindAllGuardTest_GuardsDoesNotExist() {
-        when(guardsRepository.findAll()).thenReturn(new ArrayList<>());
-        List<Guard> result = guardServiceImpl.findAllGuards();
+    public void findAllGuard_whenGuardsDoNotExist_shouldReturnEmptyList() {
+        when(guardsRepository.findAll()).thenReturn(Collections.emptyList());
+        List<Guard> result = guardService.findAllGuards();
         assertTrue(result.isEmpty());
     }
 }
