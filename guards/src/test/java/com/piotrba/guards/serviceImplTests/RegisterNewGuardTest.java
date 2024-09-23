@@ -1,34 +1,36 @@
 package com.piotrba.guards.serviceImplTests;
 
-import com.piotrba.guards.entity.Address;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import com.piotrba.guards.service.impl.GuardServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class RegisterNewGuardTest {
 
+    @Mock
     private GuardsRepository guardsRepository;
+    @InjectMocks
     private GuardServiceImpl guardService;
 
-    Guard guard = new Guard(1L, "John", "Doe", "123456789", new Address("123 Main St", "12345", "Springfield"), "john.doe@example.com", true, true);
-
-    @BeforeEach
-    public void setUp(){
-        guardsRepository = Mockito.mock(GuardsRepository.class);
-        guardService = new GuardServiceImpl(guardsRepository);
-    }
+    public Guard guard = Guard.builder()
+            .id(1L)
+            .firstName("Andy")
+            .lastName("Smith")
+            .email("andy.smith@example.com")
+            .build();
 
     @Test
-    public void registerNewGuard_withoutExistingGuard() {
+    public void registerNewGuard_withoutExistingEmail_shouldRegisterNewGuard() {
         when(guardsRepository.findByEmail(guard.getEmail())).thenReturn(Optional.empty());
         when(guardsRepository.save(guard)).thenReturn(guard);
         Guard registerNewGuard = guardService.registerNewGuard(guard);
@@ -36,13 +38,14 @@ public class RegisterNewGuardTest {
     }
 
     @Test
-    public void registerNewGuard_withExistingGuard(){
+    public void registerNewGuard_withExistingEmail_shouldNotRegisterNewGuard() {
         when(guardsRepository.findByEmail(guard.getEmail())).thenReturn(Optional.of(guard));
         try {
             guardService.registerNewGuard(guard);
             fail("Expected an IllegalStateException to be thrown");
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             assertEquals("Guard already exists with this email address", e.getMessage());
         }
     }
+
 }
