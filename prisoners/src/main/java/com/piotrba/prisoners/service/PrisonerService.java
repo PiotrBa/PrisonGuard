@@ -9,5 +9,5 @@ public interface PrisonerService {
 
     List<Prisoner> findAll();
     Optional<Prisoner> findById(Long id);
-    Optional<Prisoner> updatePrisoner (Long id, Prisoner prisoner);
+    Prisoner updatePrisoner (Long id, Prisoner prisoner);
 }
