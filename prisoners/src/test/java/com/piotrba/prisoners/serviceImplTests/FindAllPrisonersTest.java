@@ -5,9 +5,11 @@ import com.piotrba.prisoners.entity.ImprisonmentRigour;
 import com.piotrba.prisoners.entity.Prisoner;
 import com.piotrba.prisoners.repo.PrisonersRepository;
 import com.piotrba.prisoners.service.serviceImpl.PrisonerServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,31 +19,29 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class FindAllPrisonersTest {
 
-    private PrisonerServiceImpl prisonerServiceImpl;
+    @Mock
     private PrisonersRepository prisonersRepository;
+
+    @InjectMocks
+    private PrisonerServiceImpl prisonerServiceImpl;
 
     List<Prisoner> prisonerList = new ArrayList<>(Arrays.asList(
             new Prisoner(1L, "John", "Doe", LocalDateTime.now(), LocalDateTime.now().plusYears(5), ImprisonmentRigour.MAXIMUM_SECURITY, new Address("123 Main St", "12345", "Springfield")),
             new Prisoner(2L, "Jane", "Doe", LocalDateTime.now(), LocalDateTime.now().plusYears(3), ImprisonmentRigour.MINIMUM_SECURITY, new Address("456 Elm St", "54321", "Shelbyville"))
     ));
 
-    @BeforeEach
-    public void setUp() {
-        prisonersRepository = Mockito.mock(PrisonersRepository.class);
-        prisonerServiceImpl = new PrisonerServiceImpl(prisonersRepository);
-    }
-
     @Test
-    public void testFindAllPrisoners_PrisonsExist() {
+    public void findAllPrisoners_whenPrisonerExist_shouldReturnPrisonerList () {
         when(prisonersRepository.findAll()).thenReturn(prisonerList);
         List<Prisoner> result = prisonerServiceImpl.findAll();
         assertEquals(prisonerList, result);
     }
 
     @Test
-    public void testFindAllPrisoners_NoPrisonersExist() {
+    public void findAllPrisoners_whenPrisonerDoNotExist_shouldReturnEmptyList() {
         when(prisonersRepository.findAll()).thenReturn(new ArrayList<>());
         List<Prisoner> result = prisonerServiceImpl.findAll();
         assertTrue(result.isEmpty());
