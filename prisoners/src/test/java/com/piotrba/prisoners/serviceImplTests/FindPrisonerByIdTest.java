@@ -1,42 +1,44 @@
 package com.piotrba.prisoners.serviceImplTests;
 
-import com.piotrba.prisoners.entity.Address;
-import com.piotrba.prisoners.entity.ImprisonmentRigour;
 import com.piotrba.prisoners.entity.Prisoner;
 import com.piotrba.prisoners.repo.PrisonersRepository;
 import com.piotrba.prisoners.service.serviceImpl.PrisonerServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class FindPrisonerByIdTest {
 
-    private PrisonerServiceImpl prisonerService;
+    @Mock
     private PrisonersRepository prisonersRepository;
-    Prisoner prisoner = new Prisoner(1L, "John", "Doe", LocalDateTime.now(), LocalDateTime.now().plusYears(5), ImprisonmentRigour.MAXIMUM_SECURITY, new Address("123 Main St", "12345", "Springfield"));
+    @InjectMocks
+    private PrisonerServiceImpl prisonerService;
 
-    @BeforeEach
-    public void setUp() {
-        prisonersRepository = Mockito.mock(PrisonersRepository.class);
-        prisonerService = new PrisonerServiceImpl(prisonersRepository);
-    }
+    public Prisoner prisoner = Prisoner.builder()
+        .id(1L)
+        .firstName("Emma")
+        .lastName("Smith")
+        .build();
+
 
     @Test
-    public void testFindPrisonerById_PrisonsExist() {
+    public void findPrisonerById_whenPrisonsExist_shouldReturnPrisoner() {
         when(prisonersRepository.findById(1L)).thenReturn(Optional.of(prisoner));
         Optional<Prisoner> result = prisonerService.findById(1L);
         assertEquals(Optional.of(prisoner), result);
     }
 
     @Test
-    public void testFindPrisonerById_PrisonerDoesNotExist() {
+    public void findPrisonerById_whenPrisonerDoesNotExist_shouldNotReturnAnyPrisoner() {
         when(prisonersRepository.findById(2L)).thenReturn(Optional.empty());
         Optional<Prisoner> result = prisonerService.findById(2L);
         assertFalse(result.isPresent());
