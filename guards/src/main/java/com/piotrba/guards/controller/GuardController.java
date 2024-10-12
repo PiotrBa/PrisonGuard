@@ -42,7 +42,7 @@ public class GuardController {
         return guardsService.registerNewGuard(guard);
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Guard updateGuard(@PathVariable Long id, @RequestBody Guard guard) {
         logger.info("Received request to update guard with id: {}", id);
