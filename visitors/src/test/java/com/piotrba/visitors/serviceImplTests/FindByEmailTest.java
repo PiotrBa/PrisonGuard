@@ -1,52 +1,45 @@
 package com.piotrba.visitors.serviceImplTests;
 
-import com.piotrba.visitors.entity.Address;
 import com.piotrba.visitors.entity.Visitor;
-import com.piotrba.visitors.entity.visitorEnum.RelationshipToPrisioner;
 import com.piotrba.visitors.repo.VisitorsRepository;
 import com.piotrba.visitors.service.serviceImpl.VisitorServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.jayway.jsonpath.internal.path.PathCompiler.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class FindByEmailTest {
 
+    @Mock
     private VisitorsRepository visitorsRepository;
+    @InjectMocks
     private VisitorServiceImpl visitorService;
 
-    Visitor visitor = new Visitor(1L, "John", "Doe", "123456789",
-            new Address("123 Main St", "12345", "New York"),
-            "john.doe@example.com", true, 101L, RelationshipToPrisioner.FRIEND);
+    public Visitor visitor = Visitor.builder()
+            .id(1L)
+            .firstName("Ryan")
+            .lastName("Smith")
+            .email("ryan.smith@exampl.com")
+            .build();
 
-    @BeforeEach
-    public void setUp() {
-        visitorsRepository = Mockito.mock(VisitorsRepository.class);
-        visitorService = new VisitorServiceImpl(visitorsRepository);
+    @Test
+    public void findVisitorByEmail_whenEmailExists_shouldReturnVisitor() {
+        when(visitorsRepository.findByEmail("ryan.smith@exampl.com")).thenReturn(Optional.of(visitor));
+        Optional<Visitor> result = visitorService.findByEMail("ryan.smith@exampl.com");
+        assertEquals(Optional.of(visitor), result);
     }
 
     @Test
-    public void testFindByEmail_EmailExists() {
-        when(visitorsRepository.findByEmail("john.doe@example.com")).thenReturn(Optional.of(visitor));
-        Optional<Visitor> result = visitorService.findByEMail("john.doe@example.com");
-        assertTrue(result.isPresent());
-        assertEquals(visitor, result.get());
-    }
-
-    @Test
-    public void testFindByEmail_EmailDoesNotExist() {
+    public void testFindByEmail_whenEmailDoesNotExist_shouldNotReturnAnyVisitor() {
         when(visitorsRepository.findByEmail("nonexistent@example.com")).thenReturn(Optional.empty());
-        try {
-            visitorService.findByEMail("nonexistent@example.com");
-            fail("Expected a RuntimeException to be thrown");
-        } catch (RuntimeException e) {
-            assertEquals("Email does not exist.", e.getMessage());
-        }
+        Optional<Visitor> result = visitorService.findByEMail("nonexistent@example.com");
+        assertFalse(result.isPresent());
     }
 }
