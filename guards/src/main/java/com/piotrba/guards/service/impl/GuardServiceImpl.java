@@ -54,6 +54,4 @@ public class GuardServiceImpl implements GuardService {
         existingGuard.setActive(newGuard.getActive());
         return existingGuard;
     }
-
-
 }
