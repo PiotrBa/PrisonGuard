@@ -11,5 +11,4 @@ public class GuardsApplication {
     public static void main(String[] args) {
         SpringApplication.run(GuardsApplication.class, args);
     }
-
 }
