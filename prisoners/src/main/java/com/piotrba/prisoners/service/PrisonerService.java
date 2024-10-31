@@ -10,4 +10,6 @@ public interface PrisonerService {
     List<Prisoner> findAll();
     Optional<Prisoner> findById(Long id);
     Prisoner updatePrisoner (Long id, Prisoner prisoner);
+    void deletePrisoner(Long id);
+    Prisoner addPrisoner(Prisoner prisoner);
 }
