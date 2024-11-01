@@ -42,4 +42,15 @@ public class PrisonerServiceImpl implements PrisonerService {
         return existingPrisoner;
     }
 
+    @Override
+    @Transactional
+    public void deletePrisoner(Long id) {
+        prisonersRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Prisoner addPrisoner(Prisoner prisoner) {
+        return prisonersRepository.save(prisoner);
+    }
 }
