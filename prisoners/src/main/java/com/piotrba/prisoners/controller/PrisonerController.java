@@ -37,4 +37,16 @@ public class PrisonerController {
         logger.info("Received request to update prisoner with id: {}", id);
         return prisonerService.updatePrisoner(id, prisoner);
     }
+
+    @PostMapping("/add")
+    public Prisoner addPrisoner(@RequestBody Prisoner prisoner) {
+        logger.info("Received request to add a new prisoner");
+        return prisonerService.addPrisoner(prisoner);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deletePrisoner(@PathVariable Long id) {
+        logger.info("Received request to delete prisoner with id: {}", id);
+        prisonerService.deletePrisoner(id);
+    }
 }
