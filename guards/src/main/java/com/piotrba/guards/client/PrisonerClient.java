@@ -18,6 +18,9 @@ public interface PrisonerClient {
     @GetMapping("/{id}")
     PrisonerDTO getPrisonerById(@PathVariable Long id);
 
+    @PostMapping("/add")
+    PrisonerDTO addPrisoner(@RequestBody PrisonerDTO prisonerDTO);
+
     @PostMapping("/update?{id}")
     PrisonerDTO updatePrisoner(@PathVariable Long id, @RequestBody PrisonerDTO prisonerDTO);
 
