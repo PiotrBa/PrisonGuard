@@ -20,7 +20,7 @@ public class GuardController {
 
     private final GuardService guardsService;
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Guard> getAllGuards() {
         logger.info("Received request to get all guards");
