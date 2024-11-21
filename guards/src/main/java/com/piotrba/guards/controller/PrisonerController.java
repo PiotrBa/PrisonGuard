@@ -14,7 +14,7 @@ public class PrisonerController {
 
     private final PrisonerClient prisonerClient;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<PrisonerDTO> getAllPrisoners() {
         return prisonerClient.getAllPrisoners();
     }
