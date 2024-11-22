@@ -2,17 +2,14 @@ package com.piotrba.guards.client;
 
 import com.piotrba.guards.dto.PrisonerDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @FeignClient(name = "prisoner-client", url = "http://localhost:8081/prisoner")
 public interface PrisonerClient {
 
-    @GetMapping
+    @GetMapping("/all")
     List<PrisonerDTO> getAllPrisoners();
 
     @GetMapping("/{id}")
@@ -21,9 +18,9 @@ public interface PrisonerClient {
     @PostMapping("/add")
     PrisonerDTO addPrisoner(@RequestBody PrisonerDTO prisonerDTO);
 
-    @PostMapping("/update?{id}")
+    @PostMapping("/update/{id}")
     PrisonerDTO updatePrisoner(@PathVariable Long id, @RequestBody PrisonerDTO prisonerDTO);
 
-    @PostMapping("/delete/{id}")
-    PrisonerDTO deletePrisoner(@PathVariable Long id);
+    @DeleteMapping("/delete/{id}")
+    void deletePrisoner(@PathVariable Long id);
 }
