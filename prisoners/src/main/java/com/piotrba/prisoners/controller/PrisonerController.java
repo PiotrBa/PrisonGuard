@@ -19,7 +19,7 @@ public class PrisonerController {
 
     private final PrisonerService prisonerService;
 
-    @GetMapping()
+    @GetMapping("/all")
     public List<Prisoner> getAllPrisoners(){
         logger.info("Received request to get all prisoners");
         return prisonerService.findAll();
