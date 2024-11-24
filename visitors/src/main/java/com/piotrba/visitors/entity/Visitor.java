@@ -1,6 +1,6 @@
 package com.piotrba.visitors.entity;
 
-import com.piotrba.visitors.entity.visitorEnum.RelationshipToPrisioner;
+import com.piotrba.visitors.entity.visitorEnum.RelationshipToPrisoner;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -25,8 +25,7 @@ public class Visitor {
     private Address address;
     @Email
     private String email;
-    private Boolean active;
     private Long prisonerIdNumber;
     @Enumerated(EnumType.STRING)
-    private RelationshipToPrisioner relationshipToPrisoner;
+    private RelationshipToPrisoner relationshipToPrisoner;
 }
