@@ -1,6 +1,6 @@
 package com.piotrba.visitors.entity.visitorEnum;
 
-public enum RelationshipToPrisioner {
+public enum RelationshipToPrisoner {
     PARENT,
     SIBLING,
     SPOUSE,
