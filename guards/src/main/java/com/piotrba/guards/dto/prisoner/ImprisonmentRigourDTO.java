@@ -1,4 +1,4 @@
-package com.piotrba.guards.dto;
+package com.piotrba.guards.dto.prisoner;
 
 public enum ImprisonmentRigourDTO {
 
