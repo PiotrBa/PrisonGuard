@@ -1,5 +1,9 @@
 package com.piotrba.guards.controller;
 
+import com.piotrba.guards.client.PrisonerClient;
+import com.piotrba.guards.client.VisitorClient;
+import com.piotrba.guards.dto.prisoner.PrisonerDTO;
+import com.piotrba.guards.dto.visitor.VisitorDTO;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.exeptionHandler.GuardNotFoundException;
 import com.piotrba.guards.service.GuardService;
@@ -19,6 +23,8 @@ public class GuardController {
     private static final Logger logger = LoggerFactory.getLogger(GuardController.class);
 
     private final GuardService guardsService;
+    private final PrisonerClient prisonerClient;
+    private final VisitorClient visitorClient;
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
@@ -48,4 +54,14 @@ public class GuardController {
         logger.info("Received request to update guard with id: {}", id);
         return guardsService.updateGuard(id, guard);
     }
+
+    @PostMapping("/assign-prisoner/{visitorId}/{prisonerId}")
+    public VisitorDTO assignPrisonerToVisitor(@PathVariable Long visitorId, @PathVariable Long prisonerId) {
+        VisitorDTO visitor = visitorClient.getVisitorById(visitorId);
+        PrisonerDTO prisoner = prisonerClient.getPrisonerById(prisonerId);
+
+        visitor.setPrisonerIdNumber(prisoner.getId());
+        return visitorClient.updateVisitor(visitorId, visitor);
+    }
+
 }
