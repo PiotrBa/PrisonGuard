@@ -1,5 +1,7 @@
 package com.piotrba.guards.service;
 
+import com.piotrba.guards.dto.AssignRequest;
+import com.piotrba.guards.dto.prisoner.PrisonerDTO;
 import com.piotrba.guards.entity.Guard;
 
 import java.util.List;
@@ -11,4 +13,6 @@ public interface GuardService {
     Optional<Guard> findGuardById(Long id);
     Guard registerNewGuard(Guard guard);
     Guard updateGuard(Long id, Guard guard);
+    PrisonerDTO getPrisonerById (Long id);
+    void assignPrisonerToVisitor(AssignRequest request);
 }
