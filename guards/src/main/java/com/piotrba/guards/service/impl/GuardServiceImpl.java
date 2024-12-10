@@ -1,5 +1,11 @@
 package com.piotrba.guards.service.impl;
 
+import com.piotrba.guards.client.PrisonerClient;
+import com.piotrba.guards.client.VisitorClient;
+import com.piotrba.guards.dto.AssignRequest;
+import com.piotrba.guards.dto.prisoner.PrisonerDTO;
+import com.piotrba.guards.dto.visitor.RelationshipToPrisonerDTO;
+import com.piotrba.guards.dto.visitor.VisitorDTO;
 import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import com.piotrba.guards.service.GuardService;
@@ -15,6 +21,8 @@ import java.util.Optional;
 public class GuardServiceImpl implements GuardService {
 
     private final GuardsRepository guardsRepository;
+    private final PrisonerClient prisonerClient;
+    private final VisitorClient visitorClient;
 
     @Override
     public List<Guard> findAllGuards() {
@@ -53,5 +61,31 @@ public class GuardServiceImpl implements GuardService {
         existingGuard.setAddress(newGuard.getAddress());
         existingGuard.setActive(newGuard.getActive());
         return existingGuard;
+    }
+
+    @Override
+    public PrisonerDTO getPrisonerById(Long id) {
+        PrisonerDTO prisoner = prisonerClient.getPrisonerById(id);
+        if (prisoner == null) {
+            throw new IllegalArgumentException("Prisoner with ID " + id + " does not exist");
+        }
+        List<VisitorDTO> visitors = visitorClient.getVisitorsByPrisonerId(id);
+        prisoner.setVisitors(visitors);
+        return prisoner;
+    }
+
+    @Override
+    public void assignPrisonerToVisitor(AssignRequest request) {
+        PrisonerDTO prisoner = prisonerClient.getPrisonerById(request.getPrisonerId());
+        if (prisoner == null) {
+            throw new IllegalArgumentException("Prisoner with ID " + request.getPrisonerId() + " does not exist");
+        }
+        VisitorDTO visitor = visitorClient.getVisitorById(request.getVisitorId());
+        if (visitor == null) {
+            throw new IllegalArgumentException("Visitor with ID " + request.getVisitorId() + " does not exist");
+        }
+        visitor.setPrisonerIdNumber(request.getPrisonerId());
+        visitor.setRelationshipToPrisoner(RelationshipToPrisonerDTO.valueOf(request.getRelationshipToPrisoner()));
+        visitorClient.updateVisitor(request.getVisitorId(), visitor);
     }
 }
