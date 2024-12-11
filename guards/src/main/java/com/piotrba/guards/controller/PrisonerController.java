@@ -1,7 +1,8 @@
 package com.piotrba.guards.controller;
 
 import com.piotrba.guards.client.PrisonerClient;
-import com.piotrba.guards.dto.PrisonerDTO;
+import com.piotrba.guards.dto.prisoner.PrisonerDTO;
+import com.piotrba.guards.service.GuardService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class PrisonerController {
 
+    private final GuardService guardService;
     private final PrisonerClient prisonerClient;
-
     @GetMapping("/all")
     public List<PrisonerDTO> getAllPrisoners() {
         return prisonerClient.getAllPrisoners();
@@ -21,9 +22,8 @@ public class PrisonerController {
 
     @GetMapping("/{id}")
     public PrisonerDTO getPrisonerById(@PathVariable Long id) {
-        return prisonerClient.getPrisonerById(id);
+        return guardService.getPrisonerById(id);
     }
-
     @PostMapping("/add")
     public PrisonerDTO addPrisoner(@RequestBody PrisonerDTO prisonerDTO) {
         return prisonerClient.addPrisoner(prisonerDTO);
