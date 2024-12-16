@@ -16,7 +16,7 @@ public class PrisonerDTO {
     private String firstName;
     private String lastName;
     private LocalDateTime incarcerationDate;
-    private LocalDateTime imprisonmentEndTime;
+    private LocalDateTime imprisonmentEndDate;
     @Enumerated(EnumType.STRING)
     private ImprisonmentRigourDTO imprisonmentRigour;
     @Embedded
