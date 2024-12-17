@@ -44,7 +44,6 @@ public class VisitorController {
     @PostMapping("/add")
     public VisitorDTO addNewVisitor(@RequestBody VisitorDTO visitorDTO) {
         logger.info("Received request to add a new visitor: {}", visitorDTO);
-
         if (visitorDTO.getPrisonerIdNumber() != null) {
             PrisonerDTO prisoner = prisonerClient.getPrisonerById(visitorDTO.getPrisonerIdNumber());
             if (prisoner == null) {
@@ -53,7 +52,6 @@ public class VisitorController {
             }
             logger.info("Prisoner with ID {} verified for visitor assignment", visitorDTO.getPrisonerIdNumber());
         }
-
         VisitorDTO savedVisitor = visitorClient.addVisitor(visitorDTO);
         logger.info("Visitor added with id: {}", savedVisitor.getId());
         return savedVisitor;
