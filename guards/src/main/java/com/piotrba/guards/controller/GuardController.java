@@ -58,8 +58,4 @@ public class GuardController {
         guardsService.assignPrisonerToVisitor(request);
         return "Prisoner assigned to visitor successfully.";
     }
-
-
-
-
 }
