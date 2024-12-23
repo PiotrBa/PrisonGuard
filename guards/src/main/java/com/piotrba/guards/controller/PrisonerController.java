@@ -40,7 +40,7 @@ public class PrisonerController {
         return prisoner;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/register")
     public PrisonerDTO addPrisoner(@RequestBody PrisonerDTO prisonerDTO) {
         logger.info("Received request to add a new prisoner: {}", prisonerDTO);
         PrisonerDTO savedPrisoner = prisonerClient.addPrisoner(prisonerDTO);
