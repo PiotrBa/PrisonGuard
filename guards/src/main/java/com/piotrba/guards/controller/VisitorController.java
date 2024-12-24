@@ -41,7 +41,7 @@ public class VisitorController {
         return visitor;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/register")
     public VisitorDTO addNewVisitor(@RequestBody VisitorDTO visitorDTO) {
         logger.info("Received request to add a new visitor: {}", visitorDTO);
         if (visitorDTO.getPrisonerIdNumber() != null) {
