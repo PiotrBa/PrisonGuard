@@ -36,7 +36,7 @@ public class PrisonerServiceImpl implements PrisonerService {
         existingPrisoner.setFirstName(newPrisoner.getFirstName());
         existingPrisoner.setLastName(newPrisoner.getLastName());
         existingPrisoner.setIncarcerationDate(newPrisoner.getIncarcerationDate());
-        existingPrisoner.setImprisonmentEndTime(newPrisoner.getImprisonmentEndTime());
+        existingPrisoner.setImprisonmentEndDate(newPrisoner.getImprisonmentEndDate());
         existingPrisoner.setImprisonmentRigour(newPrisoner.getImprisonmentRigour());
         existingPrisoner.setAddress(newPrisoner.getAddress());
         return existingPrisoner;
