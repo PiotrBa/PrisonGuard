@@ -10,6 +10,8 @@ import com.piotrba.guards.entity.Guard;
 import com.piotrba.guards.repo.GuardsRepository;
 import com.piotrba.guards.service.GuardService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,8 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class GuardServiceImpl implements GuardService {
+
+    private static final Logger logger = LoggerFactory.getLogger(GuardServiceImpl.class);
 
     private final GuardsRepository guardsRepository;
     private final PrisonerClient prisonerClient;
@@ -38,7 +42,7 @@ public class GuardServiceImpl implements GuardService {
     @Transactional
     public Guard registerNewGuard(Guard guard) {
         Optional<Guard> existingGuard = guardsRepository.findByEmail(guard.getEmail());
-        if (existingGuard.isPresent()){
+        if (existingGuard.isPresent()) {
             throw new IllegalStateException("Guard already exists with this email address");
         }
         guard.setGrantHighLevelAccess(false);
@@ -65,16 +69,16 @@ public class GuardServiceImpl implements GuardService {
 
     @Override
     public PrisonerDTO getPrisonerById(Long id) {
-        PrisonerDTO prisoner = prisonerClient.getPrisonerById(id);
-        if (prisoner == null) {
-            throw new IllegalArgumentException("Prisoner with ID " + id + " does not exist");
-        }
-        List<VisitorDTO> visitors = visitorClient.getVisitorsByPrisonerId(id);
-        prisoner.setVisitors(visitors);
-        return prisoner;
+        return prisonerClient.getPrisonerById(id);
     }
 
     @Override
+    public VisitorDTO getVisitorById(Long id) {
+        return visitorClient.getVisitorById(id);
+    }
+
+    @Override
+    @Transactional
     public void assignPrisonerToVisitor(AssignRequest request) {
         PrisonerDTO prisoner = prisonerClient.getPrisonerById(request.getPrisonerId());
         if (prisoner == null) {
