@@ -19,35 +19,35 @@ public class GuardController {
 
     private static final Logger logger = LoggerFactory.getLogger(GuardController.class);
 
-    private final GuardService guardsService;
+    private final GuardService guardService;
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Guard> getAllGuards() {
         logger.info("Received request to get all guards");
-        return guardsService.findAllGuards();
+        return guardService.findAllGuards();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Guard getGuardById(@PathVariable Long id) {
         logger.info("Received request to get guard by id: {}", id);
-        return guardsService.findGuardById(id)
+        return guardService.findGuardById(id)
                 .orElseThrow(() -> new GuardNotFoundException("Guard with id " + id + " not found"));
     }
 
-    @PostMapping("/register")
+    @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public Guard getNewGuard(@RequestBody Guard guard) {
+    public Guard registerGuard(@RequestBody Guard guard) {
         logger.info("Received request to register a new guard");
-        return guardsService.registerNewGuard(guard);
+        return guardService.registerNewGuard(guard);
     }
 
     @PostMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Guard updateGuard(@PathVariable Long id, @RequestBody Guard guard) {
         logger.info("Received request to update guard with id: {}", id);
-        return guardsService.updateGuard(id, guard);
+        return guardService.updateGuard(id, guard);
     }
 
     @PostMapping("/assign-prisoner")
@@ -55,7 +55,7 @@ public class GuardController {
     public String assignPrisonerToVisitor(@RequestBody AssignRequest request) {
         logger.info("Received request to assign prisoner with id: {} to visitor with id: {}",
                 request.getPrisonerId(), request.getVisitorId());
-        guardsService.assignPrisonerToVisitor(request);
+        guardService.assignPrisonerToVisitor(request);
         return "Prisoner assigned to visitor successfully.";
     }
 }
