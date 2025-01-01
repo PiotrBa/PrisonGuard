@@ -1,7 +1,6 @@
 package com.piotrba.guards.dto.prisoner;
 
 import com.piotrba.guards.dto.visitor.VisitorDTO;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
@@ -19,7 +18,6 @@ public class PrisonerDTO {
     private LocalDateTime imprisonmentEndDate;
     @Enumerated(EnumType.STRING)
     private ImprisonmentRigourDTO imprisonmentRigour;
-    @Embedded
     private AddressDTO address;
     private List<VisitorDTO> visitors;
 }
