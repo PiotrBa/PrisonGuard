@@ -19,5 +19,4 @@ public class PrisonerDTO {
     @Enumerated(EnumType.STRING)
     private ImprisonmentRigourDTO imprisonmentRigour;
     private AddressDTO address;
-    private List<VisitorDTO> visitors;
 }
