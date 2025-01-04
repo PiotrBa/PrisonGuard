@@ -30,31 +30,39 @@ public class GuardServiceImpl implements GuardService {
 
     @Override
     public List<Guard> findAllGuards() {
+        logger.info("Fetching all guards");
         return guardsRepository.findAll();
     }
 
     @Override
     public Optional<Guard> findGuardById(Long id) {
+        logger.info("Fetching guard by ID: {}", id);
         return guardsRepository.findById(id);
     }
 
     @Override
     @Transactional
     public Guard registerNewGuard(Guard guard) {
+        logger.info("Registering new guard: {}", guard);
         Optional<Guard> existingGuard = guardsRepository.findByEmail(guard.getEmail());
         if (existingGuard.isPresent()) {
+            logger.error("Guard with email {} already exists", guard.getEmail());
             throw new IllegalStateException("Guard already exists with this email address");
         }
         guard.setGrantHighLevelAccess(false);
         guard.setActive(true);
-        return guardsRepository.save(guard);
+        Guard savedGuard = guardsRepository.save(guard);
+        logger.info("Guard registered successfully: {}", savedGuard);
+        return savedGuard;
     }
 
     @Override
     @Transactional
     public Guard updateGuard(Long id, Guard newGuard) {
+        logger.info("Updating guard with ID: {}", id);
         Optional<Guard> existingGuardOptional = guardsRepository.findById(id);
         if (existingGuardOptional.isEmpty()) {
+            logger.error("Guard with ID {} does not exist", id);
             throw new IllegalArgumentException("Guard does not exist");
         }
         Guard existingGuard = existingGuardOptional.get();
@@ -64,32 +72,52 @@ public class GuardServiceImpl implements GuardService {
         existingGuard.setPhoneNumber(newGuard.getPhoneNumber());
         existingGuard.setAddress(newGuard.getAddress());
         existingGuard.setActive(newGuard.getActive());
-        return existingGuard;
+        Guard updatedGuard = guardsRepository.save(existingGuard);
+        logger.info("Guard updated successfully: {}", updatedGuard);
+        return updatedGuard;
     }
 
     @Override
     public PrisonerDTO getPrisonerById(Long id) {
-        return prisonerClient.getPrisonerById(id);
+        logger.info("Fetching prisoner by ID: {}", id);
+        PrisonerDTO prisoner = prisonerClient.getPrisonerById(id);
+        if (prisoner == null) {
+            logger.error("Prisoner with ID {} not found", id);
+            throw new IllegalArgumentException("Prisoner with ID " + id + " does not exist");
+        }
+        logger.info("Fetched prisoner: {}", prisoner);
+        return prisoner;
     }
 
     @Override
     public VisitorDTO getVisitorById(Long id) {
-        return visitorClient.getVisitorById(id);
+        logger.info("Fetching visitor by ID: {}", id);
+        VisitorDTO visitor = visitorClient.getVisitorById(id);
+        if (visitor == null) {
+            logger.error("Visitor with ID {} not found", id);
+            throw new IllegalArgumentException("Visitor with ID " + id + " does not exist");
+        }
+        logger.info("Fetched visitor: {}", visitor);
+        return visitor;
     }
 
     @Override
     @Transactional
     public void assignPrisonerToVisitor(AssignRequest request) {
+        logger.info("Assigning prisoner with ID: {} to visitor with ID: {}", request.getPrisonerId(), request.getVisitorId());
         PrisonerDTO prisoner = prisonerClient.getPrisonerById(request.getPrisonerId());
         if (prisoner == null) {
+            logger.error("Prisoner with ID {} does not exist", request.getPrisonerId());
             throw new IllegalArgumentException("Prisoner with ID " + request.getPrisonerId() + " does not exist");
         }
         VisitorDTO visitor = visitorClient.getVisitorById(request.getVisitorId());
         if (visitor == null) {
+            logger.error("Visitor with ID {} does not exist", request.getVisitorId());
             throw new IllegalArgumentException("Visitor with ID " + request.getVisitorId() + " does not exist");
         }
         visitor.setPrisonerIdNumber(request.getPrisonerId());
         visitor.setRelationshipToPrisoner(RelationshipToPrisonerDTO.valueOf(request.getRelationshipToPrisoner()));
         visitorClient.updateVisitor(request.getVisitorId(), visitor);
+        logger.info("Prisoner with ID {} assigned to visitor with ID {}", request.getPrisonerId(), request.getVisitorId());
     }
 }
