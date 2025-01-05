@@ -1,12 +1,10 @@
 package com.piotrba.guards.dto.prisoner;
 
-import com.piotrba.guards.dto.visitor.VisitorDTO;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class PrisonerDTO {
