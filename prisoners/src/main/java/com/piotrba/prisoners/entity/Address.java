@@ -13,5 +13,5 @@ public class Address {
 
     private String firstLine;
     private String postCode;
-    private String City;
+    private String city;
 }
