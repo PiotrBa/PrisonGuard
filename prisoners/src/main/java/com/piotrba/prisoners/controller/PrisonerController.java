@@ -45,7 +45,7 @@ public class PrisonerController {
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
     public Prisoner addPrisoner(@RequestBody Prisoner prisoner) {
-        logger.info("Received request to add a new prisoner");
+        logger.info("Received prisoner payload: {}", prisoner);
         return prisonerService.addPrisoner(prisoner);
     }
 
