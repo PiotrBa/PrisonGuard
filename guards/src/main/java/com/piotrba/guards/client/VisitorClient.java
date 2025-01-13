@@ -15,9 +15,6 @@ public interface VisitorClient {
     @GetMapping("/{id}")
     VisitorDTO getVisitorById(@PathVariable Long id);
 
-    @GetMapping("/prisoner/{prisonerId}")
-    List<VisitorDTO> getVisitorsByPrisonerId(@PathVariable Long prisonerId);
-
     @PostMapping("/add")
     VisitorDTO addVisitor(@RequestBody VisitorDTO visitorDTO);
 
