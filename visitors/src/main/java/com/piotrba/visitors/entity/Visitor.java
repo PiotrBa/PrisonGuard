@@ -1,6 +1,5 @@
 package com.piotrba.visitors.entity;
 
-import com.piotrba.visitors.entity.visitorEnum.RelationshipToPrisoner;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
