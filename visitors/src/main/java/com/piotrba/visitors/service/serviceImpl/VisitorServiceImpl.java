@@ -53,8 +53,10 @@ public class VisitorServiceImpl implements VisitorService {
         existingVisitor.setPhoneNumber(newVisitor.getPhoneNumber());
         existingVisitor.setAddress(newVisitor.getAddress());
         existingVisitor.setEmail(newVisitor.getEmail());
+        existingVisitor.setPrisonerIdNumber(newVisitor.getPrisonerIdNumber());
+        existingVisitor.setRelationshipToPrisoner(newVisitor.getRelationshipToPrisoner());
         logger.info("Visitor updated successfully: {}", existingVisitor);
-        return existingVisitor;
+        return visitorsRepository.save(existingVisitor);
     }
 
     @Override
