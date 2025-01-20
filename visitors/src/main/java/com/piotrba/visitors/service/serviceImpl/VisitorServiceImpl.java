@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,7 @@ public class VisitorServiceImpl implements VisitorService {
     }
 
     @Override
+    @Transactional
     public Visitor updateVisitor(Long id, Visitor newVisitor) {
         logger.info("Updating visitor with ID: {}", id);
         Optional<Visitor> optionalVisitor = visitorsRepository.findById(id);
@@ -56,7 +58,7 @@ public class VisitorServiceImpl implements VisitorService {
         existingVisitor.setPrisonerIdNumber(newVisitor.getPrisonerIdNumber());
         existingVisitor.setRelationshipToPrisoner(newVisitor.getRelationshipToPrisoner());
         logger.info("Visitor updated successfully: {}", existingVisitor);
-        return visitorsRepository.save(existingVisitor);
+        return existingVisitor;
     }
 
     @Override
